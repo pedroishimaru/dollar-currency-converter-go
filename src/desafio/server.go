@@ -25,6 +25,10 @@ type currencyConvertion struct {
 	} `json:"USDBRL"`
 }
 
+type currencyConvertionResponse struct {
+	Value float64 `json:"value"`
+}
+
 const (
 	apiURL       string        = "https://economia.awesomeapi.com.br/json/last/USD-BRL"
 	dbTimeout    time.Duration = 10 * time.Millisecond
@@ -83,7 +87,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	response := map[string]float64{"value": value}
+	response := currencyConvertionResponse{Value: value}
 	json.NewEncoder(w).Encode(response)
 
 }
