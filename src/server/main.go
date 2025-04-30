@@ -1,4 +1,4 @@
-package desafio
+package main
 
 import (
 	"context"
@@ -123,6 +123,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	value, err := GetValue(baseCtx)
 	if err != nil {
+
+		log.Println("Error getting value:", err)
+
 		if err == context.DeadlineExceeded {
 			log.Println("Request timed out")
 			http.Error(w, "Request timed out", http.StatusGatewayTimeout)
@@ -151,12 +154,20 @@ func StartServer() {
 
 	var err error
 
+	log.Println("Starting server...")
+
 	db, err = SetupDatabase()
 	if err != nil {
 		panic("Failed to connect to database")
+	} else {
+		log.Println("Connected to database")
 	}
 
 	http.HandleFunc("/cotacao", handler)
 	http.ListenAndServe(":8080", nil)
 
+}
+
+func main() {
+	StartServer()
 }

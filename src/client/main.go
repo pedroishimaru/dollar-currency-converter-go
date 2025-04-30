@@ -1,4 +1,4 @@
-package desafio
+package main
 
 import (
 	"context"
@@ -8,7 +8,14 @@ import (
 	"net/http"
 	"os"
 	"time"
+
+	"gorm.io/gorm"
 )
+
+type CurrencyConversionResponse struct {
+	gorm.Model `json:"-"`
+	Value      float64 `json:"value"`
+}
 
 const (
 	clientTimout  time.Duration = 300 * time.Millisecond
@@ -65,4 +72,13 @@ func RequestCurrencyConversion() error {
 	}
 
 	return nil
+}
+
+func main() {
+	err := RequestCurrencyConversion()
+	if err != nil {
+		log.Fatalf("Erro ao fazer a requisição: %v", err)
+	} else {
+		log.Println("Requisição realizada com sucesso ")
+	}
 }
